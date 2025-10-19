@@ -32,5 +32,20 @@ func getConfigFilePath() (string, error) {
 }
 
 func write(cfg Config) error {
+	fullPath, err := getConfigFilePath()
+	if err != nil {
+		return err
+	}
 
+	file, err := os.Create(fullPath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	if err = json.NewEncoder(file).Encode(cfg); err != nil {
+		return err
+	}
+
+	return nil
 }
